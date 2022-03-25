@@ -1,43 +1,25 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:instagram/resources/auth_methods.dart';
+import 'package:instagram/screens/onboarding/sign_up.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:instagram/utils/colors.dart';
-import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
+import 'package:get/get.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _fileController = TextEditingController();
-  Uint8List? _image;
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _bioController.dispose();
-    _usernameController.dispose();
-    _fileController.dispose();
-  }
-
-  void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    setState() {
-      _image = im;
-    }
   }
 
   Widget build(BuildContext context) {
@@ -56,36 +38,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     //       color: primaryColor,
                     //       height: 64,
                     //     )
-                    const SizedBox(height: 24),
-                    Stack(
-                      children: [
-                        _image != null
-                            ? CircleAvatar(
-                                radius: 64,
-                                backgroundImage: MemoryImage(_image!),
-                              )
-                            : CircleAvatar(
-                                radius: 64,
-                                backgroundImage: NetworkImage(
-                                    'https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png'),
-                              ),
-                        Positioned(
-                          bottom: -10,
-                          left: 80,
-                          child: IconButton(
-                            onPressed: selectImage,
-                            icon: const Icon(Icons.add_a_photo),
-                          ),
-                        )
-                      ],
-                    ),
                     //emailtextfield
                     const SizedBox(height: 64),
-                    TextFieldInput(
-                        textEditingController: _usernameController,
-                        hintText: "Enter your username",
-                        textInputType: TextInputType.text),
-                    const SizedBox(height: 24),
                     TextFieldInput(
                         textEditingController: _emailController,
                         hintText: "Enter your email",
@@ -99,22 +53,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         isPass: true),
                     //btn
                     const SizedBox(height: 24),
-                    TextFieldInput(
-                        textEditingController: _bioController,
-                        hintText: "Enter your bio",
-                        textInputType: TextInputType.text),
-                    const SizedBox(height: 24),
                     InkWell(
-                      onTap: () async {
-                        String res = await AuthMethods().signUpUser(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          username: _usernameController.text,
-                          bio: _bioController.text,
-                        );
-                      },
                       child: Container(
-                        child: const Text('Sign up'),
+                        child: const Text('Login'),
                         width: double.infinity,
                         alignment: Alignment.center,
                         padding: EdgeInsets.symmetric(vertical: 12),
@@ -142,7 +83,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             )),
                         SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(SignupScreen());
+                          },
                           child: Container(
                               child: const Text(
                                 'Sign up',

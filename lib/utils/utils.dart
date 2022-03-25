@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 pickImage(ImageSource source) async {
@@ -9,5 +10,13 @@ pickImage(ImageSource source) async {
   if(_file !=null){
     return await _file.readAsBytes();
   }
-  print("No image selected");
+  GetSnackBar(animationDuration: Duration(seconds: 10),title: "Error accessing the photo",);
+}
+
+showSnackBar(String content, BuildContext context){
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(content),
+    ),
+  );
 }

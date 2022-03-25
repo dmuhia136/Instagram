@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/resources/auth_methods.dart';
+import 'package:instagram/screens/homescreen/Home.dart';
 import 'package:instagram/screens/onboarding/sign_up.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 import 'package:get/get.dart';
 
@@ -15,13 +18,30 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  var isLoading=false;
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
   }
-
+void loginUser()async{
+  setState(() {
+    isLoading=true;
+  });
+  String res= await AuthMethods().loginUser(email: _emailController.text, password: _passwordController.text);
+  setState(() {
+    isLoading=false;
+  });
+  if(res =="success"){
+    //
+    Get.to(HomeScreen());
+   showSnackBar(res, context);
+  
+  }else{
+    showSnackBar(res, context);
+  }
+}
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -32,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Flexible(child: Container(), flex: 2),
-                    Text('Instagram'),
+                    Text('Instagram',style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,)),
                     //logo
                     //     SvgPicture.asset('assets/instagram.svg',
                     //       color: primaryColor,
@@ -53,9 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         isPass: true),
                     //btn
                     const SizedBox(height: 24),
-                    InkWell(
+                    InkWell(onTap: loginUser,
                       child: Container(
-                        child: const Text('Login'),
+                        child: isLoading ? const Center(child: CircularProgressIndicator(color: primaryColor,),) : const Text('Login'),
                         width: double.infinity,
                         alignment: Alignment.center,
                         padding: EdgeInsets.symmetric(vertical: 12),

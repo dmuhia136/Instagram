@@ -52,7 +52,24 @@ class AuthMethods {
     }
     return res;
   }
+  Future<String> loginUser({
+  required String email,
+  required String password
+}) async{
+  String res = 'See error occured';
+  try {
+    if(email.isEmpty || password.isEmpty){
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      res='success';
+    }
+    else{
+      res='please enter the correct credentials';
+    }
+  } catch (e) {
+    res=e.toString();
+  }
+  return res;
+}
 }
 
-// class Uint8list {
-// }
+

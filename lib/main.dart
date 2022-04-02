@@ -32,7 +32,7 @@ final _user= _auth.currentUser;
       ),
       // home: const Responsive(mobileScreenLayout: mobileScreenLayout(), webScreenLayout: webScreenLayout(),),
       // home: SignupScreen(),
-      home: LoginScreen(),
+      home: _user != null? HomeScreen():LoginScreen(),
     );
   }
 }
